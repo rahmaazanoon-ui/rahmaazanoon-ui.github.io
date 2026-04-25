@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRESH | perfume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #05070a; color: #fff; overflow-x: hidden; }
+
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; position: fixed; width: 100%; z-index: 1000; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
+        .auth-container { display: flex; gap: 20px; }
+        .auth-btn { cursor: pointer; color: #eee; transition: 0.3s; font-size: 16px; font-weight: 400; }
+        .auth-btn:hover { color: #facc15; }
+        .menu-wrapper { display: flex; align-items: center; gap: 15px; flex-direction: row-reverse; }
+        
+        .gold-logo { width: 38px; height: 38px; border: 2px solid #facc15; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-family: 'Playfair Display', serif; color: #facc15; cursor: pointer; font-weight: bold; font-size: 18px; }
+        .menu-icon { font-size: 28px; cursor: pointer; color: #facc15; }
+        @keyframes wink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .gold-logo:hover, .menu-icon:hover { animation: wink 1s infinite; }
+
+        .side-menu { position: fixed; top: 70px; left: -300px; width: 260px; height: auto; background: rgba(2, 6, 23, 0.98); padding: 20px; transition: 0.4s; z-index: 2000; border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 0 15px 15px 0; }
+        .side-menu.active { left: 0; }
+        .side-menu a { display: block; margin: 15px 0; text-decoration: none; color: #ccc; font-size: 16px; transition: 0.3s; text-align: left; }
+        .side-menu a:hover { color: #facc15; padding-left: 10px; }
+
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-size: contain; background-position: center; position: relative; background-repeat: no-repeat; }
+        .brand-box { z-index: 10; margin-bottom: 10px; }
+        .brand-box h1 { font-size: 80px; font-family: 'Playfair Display', serif; color: #facc15; line-height: 0.9; }
+        .brand-box span { font-size: 18px; color: #ccc; letter-spacing: 6px; display: block; }
+        .hero p { max-width: 600px; margin: 15px auto; line-height: 1.6; color: #ddd; z-index: 10; font-size: 16px; }
+        .shop-btn { padding: 12px 35px; border: 2px solid #facc15; background: transparent; color: #facc15; font-size: 16px; cursor: pointer; transition: 0.3s; z-index: 10; font-weight: bold; }
+        .shop-btn:hover { background: #facc15; color: #000; animation: wink 1s infinite; }
+
+        .modal { display: none; position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 3000; }
+        .modal-content { background: #fff; color: #000; padding: 35px; border-radius: 12px; width: 350px; text-align: center; position: relative; }
+        .modal-content input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; outline: none; }
+        .btn-action { width: 100%; padding: 10px; background: #facc15; border: none; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+        .btn-close { display: block; width: 100%; padding: 10px; color: red; cursor: pointer; font-weight: bold; font-size: 14px; margin-top: 5px; border: 1px solid transparent; }
+        
+        #shop-section, #best-sellers-section, #special-clients-section, #new-arrivals-section, #special-designs-section { display: none; padding-top: 100px; min-height: 100vh; text-align: center; }
+        .search-container { margin: 20px auto; width: 80%; max-width: 500px; }
+        .search-box { width: 100%; padding: 12px; background: transparent; border: 1px solid #facc15; color: #fff; border-radius: 25px; outline: none; text-align: center; }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; padding: 40px 10%; margin-top: 20px; }
+        .product-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(250, 204, 21, 0.2); padding: 20px; border-radius: 15px; transition: 0.4s; }
+        .product-card:hover { border-color: #facc15; transform: translateY(-10px); }
+        .product-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .product-card h3 { color: #fff; font-family: 'Playfair Display', serif; margin-bottom: 5px; }
+        .product-card .price { color: #facc15; font-weight: bold; margin-bottom: 15px; display: block; }
+        .buy-btn { background: transparent; border: 1px solid #facc15; color: #facc15; padding: 8px 20px; cursor: pointer; transition: 0.3s; }
+        .buy-btn:hover { background: #facc15; color: #000; }
+        
+        .design-form { max-width: 500px; margin: 40px auto; padding: 30px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; }
+        .design-form textarea { width: 100%; height: 150px; margin-bottom: 20px; padding: 10px; border-radius: 5px; border: 1px solid #facc15; background: transparent; color: #fff; }
+    </style>
+</head>
+<body dir="ltr">
+
+<header id="mainHeader">
+    <div class="menu-wrapper">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="gold-logo" onclick="location.reload()">F</div>
+    </div>
+    <div class="auth-container">
+        <div class="auth-btn" onclick="openModal('modalLogin')">Log In</div>
+        <div class="auth-btn" onclick="openModal('modalSignup')">Sign Up</div>
+    </div>
+</header>
+
+<div class="side-menu" id="sideMenu">
+    <a href="#" onclick="location.reload()">HOME</a>
+    <a href="#" onclick="showShop()">SHOP ALL</a>
+    <a href="#" onclick="showBestSellers()">BEST SELLERS</a>
+    <a href="#" onclick="showSpecialCollection()">SPECIAL COLLECTION</a>
+    <a href="#" onclick="showNewArrivals()">NEW ARRIVALS</a>
+    <a href="#" onclick="showSpecialDesigns()">SPECIAL DESIGNES</a>
+    <a href="#">MEN</a>
+    <a href="#">WOMEN</a>
+    <a href="#">OFFERS</a>
+    <a href="#">TRACK YOUR ORDER</a>
+    <a href="#">REVIEWS</a>
+    <a href="#">PAYMENT</a>
+</div>
+
+<section class="hero" id="hero">
+    <div class="brand-box">
+        <h1>FRESH</h1>
+        <span>perfume</span>
+    </div>
+    <p>A scent that whispers elegance and leaves a memory behind. <br> Crafted for those who don’t just walk… they leave a trace.</p>
+    <button class="shop-btn" onclick="showShop()">Shop Now</button>
+</section>
+
+<section id="shop-section">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #facc15; margin-bottom: 20px;"> OUR COLLECTION</h1>
+    <div class="search-container"><input type="text" class="search-box" placeholder="Search for your favorite scent..."></div>
+    <div class="products-grid">
+        <div class="product-card"><img src="perfume1.jpg" alt="Perfume"><h3>Fresh Vanilla</h3><span class="price">1500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume2.jpg" alt="Perfume"><h3>Fresh Ocean Mist</h3><span class="price">1650 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume3.jpg" alt="Perfume"><h3>Fresh Velvet Rose</h3><span class="price">1800 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume4.jpg" alt="Perfume"><h3>Fresh Golden Amber</h3><span class="price">1950 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume5.jpg" alt="Perfume"><h3>Fresh Midnight Jasmine</h3><span class="price">2100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume6.jpg" alt="Perfume"><h3>Fresh Citrus Bloom</h3><span class="price">1750 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume7.jpg" alt="Perfume"><h3>Fresh Royal Sandalwood</h3><span class="price">2200 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume8.jpg" alt="Perfume"><h3>Fresh Secret Patchouli</h3><span class="price">2350 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume9.jpg" alt="Perfume"><h3>Fresh Ethereal Lavender</h3><span class="price">1900 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume10.jpg" alt="Perfume"><h3>Fresh Dark Leather</h3><span class="price">2500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume11.jpg" alt="Perfume"><h3>Fresh Silk Cotton</h3><span class="price">1600 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume12.jpg" alt="Perfume"><h3>Fresh Midnight Neroli</h3><span class="price">2050 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume13.jpg" alt="Perfume"><h3>Fresh Bergamot Breeze</h3><span class="price">1550 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume14.jpg" alt="Perfume"><h3>Fresh Imperial Saffron</h3><span class="price">2700 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume15.jpg" alt="Perfume"><h3>Fresh White Musk</h3><span class="price">1850 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume16.jpg" alt="Perfume"><h3>Fresh Oud Royal</h3><span class="price">2900 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume17.jpg" alt="Perfume"><h3>Fresh Summer Breeze</h3><span class="price">1450 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume18.jpg" alt="Perfume"><h3>Fresh Spicy Wood</h3><span class="price">2200 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume19.jpg" alt="Perfume"><h3>Fresh Floral Night</h3><span class="price">1900 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume20.jpg" alt="Perfume"><h3>Fresh Intense Musk</h3><span class="price">2100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume21.jpg" alt="Perfume"><h3>Fresh Aqua Marine</h3><span class="price">1700 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume22.jpg" alt="Perfume"><h3>Fresh Desert Rose</h3><span class="price">2400 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume23.jpg" alt="Perfume"><h3>Fresh Tobacco Leaf</h3><span class="price">2600 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="perfume24.jpg" alt="Perfume"><h3>Fresh Honey Glow</h3><span class="price">1800 EGP</span><button class="buy-btn">Add to Cart</button></div>
+    </div>
+</section>
+
+<section id="best-sellers-section">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #facc15; margin-bottom: 20px;">BEST SELLERS</h1>
+    <div class="search-container"><input type="text" class="search-box" placeholder="Search for your favorite scent..."></div>
+    <div class="products-grid">
+        <div class="product-card"><img src="مممم.jpg" alt="Perfume"><h3>FRESH LUMARA</h3><span class="price">4300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="ممم.jpg" alt="Perfume"><h3>FRESH VELOURA</h3><span class="price">2500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="مم.jpg" alt="Perfume"><h3>FRESH ATHERIA</h3><span class="price">2200 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="م.jpg" alt="Perfume"><h3>FRESH SOLAY</h3><span class="price">3600 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="88.jpg" alt="Perfume"><h3>FRESH AURANOX</h3><span class="price">3100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="888.jpg" alt="Perfume"><h3>FRESH LUVIA</h3><span class="price">2700 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="22.jpg" alt="Perfume"><h3>FRESH ELARA</h3><span class="price">3200 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="11.jpg" alt="Perfume"><h3>FRESH AURELLEIO</h3><span class="price">2250 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="44.jpg" alt="Perfume"><h3>FRESH OBSIDIAN</h3><span class="price">2000 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="55.jpg" alt="Perfume"><h3>FRESH VESPER</h3><span class="price">4100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="33.jpg" alt="Perfume"><h3>FRESH CLESTIA</h3><span class="price">2450 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="66.jpg" alt="Perfume"><h3>FRESH BRNJUO</h3><span class="price">4380 EGP</span><button class="buy-btn">Add to Cart</button></div>
+    </div>
+</section>
+
+<section id="special-clients-section">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #facc15; margin-bottom: 20px;">SPECIAL COLLECTION</h1>
+    <div class="search-container"><input type="text" class="search-box" placeholder="Search for your favorite scent..."></div>
+    <div class="products-grid">
+        <div class="product-card"><img src="CCV.jpeg" alt="Perfume"><h3> FRESH VIP EXCLUSIVE</h3><span class="price">7500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="H.jpeg" alt="Perfume"><h3> FRESH ROYAL EDITION</h3><span class="price">5350 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="3.jpg" alt="Perfume"><h3>Imperial Collection</h3><span class="price">6500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="4.jpg" alt="Perfume"><h3>Sovereign Blend</h3><span class="price">4700 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="5.jpg" alt="Perfume"><h3>Majestic Signature </h3><span class="price">5300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="6.jpeg" alt="Perfume"><h3>Crown Heritage</h3><span class="price">4250 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="7.jpg" alt="Perfume"><h3>Noble Essence</h3><span class="price">5300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="8.jpeg" alt="Perfume"><h3>Private Atelier</h3><span class="price">6400 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="9.jpeg" alt="Perfume"><h3>Signature Gold</h3><span class="price">6654 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="10.jpeg" alt="Perfume"><h3>Elite Opus</h3><span class="price">4300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="11.jpeg" alt="Perfume"><h3>Prestige Series</h3><span class="price">5450 EGP</span><button class="buy-btn">Add to Cart</button></div>
+        <div class="product-card"><img src="12.jpg" alt="Perfume"><h3>Rare Edition</h3><span class="price">6200EGP</span><button class="buy-btn">Add to Cart</button></div>
+    </div>
+</section>
+
+<section id="new-arrivals-section">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #facc15; margin-bottom: 20px;">NEW ARRIVALS</h1>
+    <div class="search-container"><input type="text" class="search-box" placeholder="Search for your favorite scent..."></div>
+    <div class="products-grid">
+     <div class="product-card"><img src="n1.jpeg" alt="Perfume"><h3>Floral Etheer</h3><span class="price">2000 EGP</span><button class="buy-btn">Add to Cart</button></div>
+    <div class="product-card"><img src="n2.jpeg" alt="Perfume"><h3>Nature’s Whisper</h3><span class="price">2700 EGP</span><button class="buy-btn">Add to Cart</button></div>
+    <div class="product-card"><img src="n3.jpeg" alt="Perfume"><h3>Stream Hymns</h3><span class="price">2500 EGP</span><button class="buy-btn">Add to Cart</button></div>
+    <div class="product-card"><img src="n4.jpeg" alt="Perfume"><h3>Mystic Pulse</h3><span class="price">3200 EGP</span><button class="buy-btn">Add to Cart</button></div>
+   <div class="product-card"><img src="n5.jpeg" alt="Perfume"><h3>Levender Sun </h3><span class="price">2300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+   <div class="product-card"><img src="n6.jpeg" alt="Perfume"><h3>Silk Of Orient</h3><span class="price">3400 EGP</span><button class="buy-btn">Add to Cart</button></div>
+  <div class="product-card"><img src="n7.jpeg" alt="Perfume"><h3>Essence Of Elegance</h3><span class="price">2600EGP</span><button class="buy-btn">Add to Cart</button></div>
+  <div class="product-card"><img src="n8.jpeg" alt="Perfume"><h3>Night Calm</h3><span class="price">3100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+ <div class="product-card"><img src="n9.jpeg" alt="Perfume"><h3>Wood Essence</h3><span class="price">3000 EGP</span><button class="buy-btn">Add to Cart</button></div>
+  <div class="product-card"><img src="n10.jpeg" alt="Perfume"><h3>Mirage Glow</h3><span class="price">2100 EGP</span><button class="buy-btn">Add to Cart</button></div>
+ <div class="product-card"><img src="n11.jpeg" alt="Perfume"><h3>Levitas</h3><span class="price">3300 EGP</span><button class="buy-btn">Add to Cart</button></div>
+   <div class="product-card"><img src="n12.jpeg" alt="Perfume"><h3>Rooted Deep</h3><span class="price">2900 EGP</span><button class="buy-btn">Add to Cart</button></div>
+  </div>
+</section>
+
+<section id="special-designs-section">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #facc15; margin-bottom: 20px;">SPECIAL DESIGNES</h1>
+    <div class="design-form">
+        <textarea placeholder="Tell us about your special design idea..."></textarea>
+        <div style="margin-bottom: 20px;">
+            <input type="file" style="color: #fff;">
+        </div>
+        <button class="btn-action" onclick="openModal('modalSuccess')">SUBMIT</button>
+    </div>
+</section>
+
+<div class="modal" id="modalSignup">
+    <div class="modal-content">
+        <h2 style="margin-bottom:10px">Sign Up</h2>
+        <input type="text" placeholder="First name">
+        <input type="text" placeholder="Last name">
+        <input type="email" placeholder="Email">
+        <input type="text" placeholder="Phone number">
+        <input type="password" placeholder="Password">
+        <button class="btn-action" onclick="handleSignup()">SUBMIT</button>
+        <span class="btn-close" onclick="closeModal('modalSignup')">CLOSE X</span>
+    </div>
+</div>
+
+<div class="modal" id="modalLogin">
+    <div class="modal-content">
+        <h2 style="margin-bottom:10px">Log In</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button class="btn-action" onclick="closeModal('modalLogin')">SUBMIT</button>
+        <span class="btn-close" onclick="closeModal('modalLogin')">CLOSE X</span>
+    </div>
+</div>
+
+<div class="modal" id="modalSuccess">
+    <div class="modal-content">
+        <h2 style="color: #facc15;">Success!</h2>
+        <p>Your request has been sent successfully.</p>
+        <button class="btn-action" onclick="closeModal('modalSuccess')">OK</button>
+    </div>
+</div>
+
+<script>
+    const imageName = 'bg.jpg.jpeg';
+    document.getElementById('hero').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${imageName}')`;
+
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    
+    function hideAllSections() {
+        document.getElementById('hero').style.display = 'none';
+        document.getElementById('shop-section').style.display = 'none';
+        document.getElementById('best-sellers-section').style.display = 'none';
+        document.getElementById('special-clients-section').style.display = 'none';
+        document.getElementById('new-arrivals-section').style.display = 'none';
+        document.getElementById('special-designs-section').style.display = 'none';
+        document.getElementById('modalLogin').style.display = 'none';
+        document.getElementById('modalSignup').style.display = 'none';
+        document.getElementById('modalSuccess').style.display = 'none';
+    }
+
+    function showShop() { hideAllSections(); document.getElementById('shop-section').style.display = 'block'; document.getElementById('sideMenu').classList.remove('active'); }
+    function showBestSellers() { hideAllSections(); document.getElementById('best-sellers-section').style.display = 'block'; document.getElementById('sideMenu').classList.remove('active'); }
+    function showSpecialCollection() { hideAllSections(); document.getElementById('special-clients-section').style.display = 'block'; document.getElementById('sideMenu').classList.remove('active'); }
+    function showNewArrivals() { hideAllSections(); document.getElementById('new-arrivals-section').style.display = 'block'; document.getElementById('sideMenu').classList.remove('active'); }
+    function showSpecialDesigns() { hideAllSections(); document.getElementById('special-designs-section').style.display = 'block'; document.getElementById('sideMenu').classList.remove('active'); }
+
+    function handleSignup() {
+        closeModal('modalSignup');
+        openModal('modalSuccess');
+    }
+</script>
+
+</body>
+</html>
