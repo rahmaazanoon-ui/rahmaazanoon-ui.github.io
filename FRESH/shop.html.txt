@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>SHOP ALL | FRESH</title>
+    <style>
+        body { background: #05070a; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #333; }
+        .gold-logo { width: 40px; height: 40px; border: 2px solid #facc15; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #facc15; font-weight: bold; }
+        .search-area { text-align: center; margin-top: 100px; }
+        .search-box { width: 60%; padding: 15px; border-radius: 25px; border: 2px solid #facc15; background: transparent; color: #fff; outline: none; font-size: 18px; }
+        .search-box:focus { box-shadow: 0 0 10px #facc15; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 30px; color: #facc15; cursor:pointer;">☰</div>
+    <div class="gold-logo" onclick="window.location.href='index.html'">F</div>
+</header>
+
+<div class="search-area">
+    <h1 style="color:#facc15; margin-bottom:20px;">Shop All Collections</h1>
+    <input type="text" class="search-box" placeholder="Search for luxury scents...">
+</div>
+
+</body>
+</html>
